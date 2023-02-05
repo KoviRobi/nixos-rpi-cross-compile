@@ -11,6 +11,9 @@
             crossSystem = lib.systems.examples.aarch64-multiplatform;
           };
 
+          networking.hostName = "pi";
+          networking.domain = "badger-toad.ts.net";
+
           imports = [ (modulesPath + "/installer/sd-card/sd-image-aarch64.nix") ];
 
           # Let 'nixos-version --json' know about the Git revision
