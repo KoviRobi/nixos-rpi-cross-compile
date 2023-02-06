@@ -8,7 +8,9 @@
   inputs.kovirobi.inputs.nixpkgs.follows = "nixpkgs";
   inputs.kovirobi.inputs.home-manager.follows = "home-manager";
 
-  outputs = { self, nixpkgs, home-manager, kovirobi }: {
+  inputs.deploy-rs.url = "github:serokell/deploy-rs";
+
+  outputs = { self, nixpkgs, home-manager, kovirobi, deploy-rs }: {
 
     nixosConfigurations.cross-vm = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -52,6 +54,10 @@
           services.openssh.enable = true;
           services.openssh.settings.PermitRootLogin = "no";
 
+          nix.settings.trusted-public-keys = [
+            "pc-nixos-a-1:2ajz3MCJ5lorXbQ5JcRoneIYBNbssblrwPgdanqE07g="
+            "rmk-cc-pc-nixos-a:0hnzFy2JuBXDEwmfNf6UHDO0uTAQ69Z1aryW62z+AWs="
+          ];
           nix.registry.nixpkgs.flake = nixpkgs;
           nix.registry.nixos-config.flake = self;
 
@@ -63,6 +69,8 @@
 
           environment.shellAliases.nixrepl =
             "nix repl --expr 'builtins.getFlake \"${self}\"'";
+
+          environment.systemPackages = [ pkgs.python3 pkgs.python3.pkgs.pip ];
         })
 
         home-manager.nixosModule
@@ -83,7 +91,86 @@
       ];
     };
 
-    packages.x86_64-linux.default = self.nixosConfigurations.cross-vm.config.system.build.sdImage;
-  };
+    nixpkgs = import nixpkgs {
+      system = "x86_64-linux";
+      crossSystem = nixpkgs.lib.systems.examples.aarch64-multiplatform;
+      overlays = builtins.attrValues kovirobi.overlays;
+    };
 
+    packages.x86_64-linux.default = self.nixosConfigurations.cross-vm.config.system.build.sdImage;
+
+    deploy.nodes.pi = {
+      sshUser = "rmk";
+      user = "root";
+      hostname = "pi.badger-toad.ts.net";
+      profiles.system = {
+        path = self.activate.nixos self.nixosConfigurations.cross-vm;
+      };
+    };
+
+    activate = rec {
+      custom =
+        {
+          __functor = customSelf: base: activate:
+            self.nixpkgs.buildEnv {
+              name = ("activatable-" + base.name);
+              paths =
+                [
+                  base
+                  (self.nixpkgs.writeTextFile {
+                    name = base.name + "-activate-path";
+                    text = ''
+                      #!${self.nixpkgs.runtimeShell}
+                      set -euo pipefail
+
+                      if [[ "''${DRY_ACTIVATE:-}" == "1" ]]
+                      then
+                          ${customSelf.dryActivate or "echo ${self.nixpkgs.writeScript "activate" activate}"}
+                      elif [[ "''${BOOT:-}" == "1" ]]
+                      then
+                          ${customSelf.boot or "echo ${self.nixpkgs.writeScript "activate" activate}"}
+                      else
+                          ${activate}
+                      fi
+                    '';
+                    executable = true;
+                    destination = "/deploy-rs-activate";
+                  })
+                  (self.nixpkgs.writeTextFile {
+                    name = base.name + "-activate-rs";
+                    text = ''
+                      #!${self.nixpkgs.runtimeShell}
+                      exec ${self.nixpkgs.deploy-rs}/bin/activate "$@"
+                    '';
+                    executable = true;
+                    destination = "/activate-rs";
+                  })
+                ];
+            };
+        };
+
+      nixos = base:
+        (custom // {
+          dryActivate = "$PROFILE/bin/switch-to-configuration dry-activate";
+          boot = "$PROFILE/bin/switch-to-configuration boot";
+        })
+          base.config.system.build.toplevel
+          ''
+            # work around https://github.com/NixOS/nixpkgs/issues/73404
+            cd /tmp
+
+            $PROFILE/bin/switch-to-configuration switch
+
+            # https://github.com/serokell/deploy-rs/issues/31
+            ${with base.config.boot.loader;
+            nixpkgs.lib.optionalString systemd-boot.enable
+            "sed -i '/^default /d' ${efi.efiSysMountPoint}/loader/loader.conf"}
+          '';
+
+      home-manager = base: custom base.activationPackage "$PROFILE/activate";
+
+      noop = base: custom base ":";
+    };
+
+  };
 }
