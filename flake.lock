@@ -144,11 +144,11 @@
         "utils": "utils_2"
       },
       "locked": {
-        "lastModified": 1675595366,
-        "narHash": "sha256-WoQkwaaoZqrhWpIrMxA+2j8CgxgyvjHzCyEZAQu06rQ=",
-        "owner": "nix-community",
+        "lastModified": 1675722869,
+        "narHash": "sha256-PFBmo57IwAbwFOIPPe8DqoUyTlDymumxW2tYvbqdm1A=",
+        "owner": "KoviRobi",
         "repo": "home-manager",
-        "rev": "9621e9ab80a038cd11c7cfcae4df46a59d62b16a",
+        "rev": "3c89bc6e34502a506837e67319726f5450122c58",
         "type": "github"
       },
       "original": {

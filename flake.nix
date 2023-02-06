@@ -83,11 +83,6 @@
             imports = kovirobi.homeModules.simple;
             home.stateVersion = "22.11";
             systemd.user.services.tmux-server.Install.WantedBy = [ "basic.target" ];
-            # Fails to cross-compile
-            # Probably
-            # https://git.sr.ht/~rycee/nmd/tree/409f1310b168f96c6c8b556d24731a3e7c26c255/item/lib/modules-docbook.nix
-            # should have nix-instantiate from nativeBuildInputs
-            manual.manpages.enable = false;
           };
         }
       ];
