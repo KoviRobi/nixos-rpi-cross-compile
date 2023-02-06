@@ -38,12 +38,7 @@
             hashedPassword = "$y$j9T$92t3XJPmBHWk1baoc0WTu/$DAC5AJseext1xVG7N0PK2tHYJ4L0qEZpbJleu1V5sS5";
             isNormalUser = true;
             extraGroups = [ "wheel" ];
-            openssh.authorizedKeys.keys = [
-              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHfojmpABobr3CEgN3eCu3mEqpr3oAs2h5NfY1ZtppIK ccl\\rmk@RMKW10L2"
-              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBxS1hIoi4jj4h00KoIfBJJX6aMF5TtdZZxBOqLRRKCH rmk35 pc id_ed25519"
-              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJCjMm+GhqvoboXvOJO/MuLccb606oJyHYyL4Mo3kuLO u0_a301@Legion Duel"
-              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKG9Dg3j/KJgDbtsUSyOJBF7+bQzfDQpLo4gqDX195rJ rmk@rmk-cc-pc-nixos-a"
-            ];
+            openssh.authorizedKeys.keys = import "${kovirobi}/pubkeys.nix";
           };
           system.stateVersion = "22.11";
 
