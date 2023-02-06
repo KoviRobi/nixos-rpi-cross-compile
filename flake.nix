@@ -51,6 +51,18 @@
 
           services.openssh.enable = true;
           services.openssh.settings.PermitRootLogin = "no";
+
+          nix.registry.nixpkgs.flake = nixpkgs;
+          nix.registry.nixos-config.flake = self;
+
+          nix.nixPath = [
+            "nixpkgs=${nixpkgs}"
+            "home-manager=${home-manager}"
+            "${nixpkgs}"
+          ];
+
+          environment.shellAliases.nixrepl =
+            "nix repl --expr 'builtins.getFlake \"${self}\"'";
         })
 
         home-manager.nixosModule
