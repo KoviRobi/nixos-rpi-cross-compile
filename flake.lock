@@ -173,11 +173,11 @@
         "utils": "utils_5"
       },
       "locked": {
-        "lastModified": 1675726726,
-        "narHash": "sha256-L3a5sfsmRYMWcgtIbdgsinR+EdodvNmo24py+yOX2sA=",
+        "lastModified": 1675727707,
+        "narHash": "sha256-elNTXoglbYgYdDTfm/+QP5FZKavxqvWKgH+FxtVauYE=",
         "owner": "KoviRobi",
         "repo": "nixos-config",
-        "rev": "7e28fabb157006b832ba4319f99dd6eb95ad1219",
+        "rev": "cab49abe9330ce5f04afe6b465716c074a8a8ffc",
         "type": "github"
       },
       "original": {
