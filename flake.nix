@@ -54,6 +54,7 @@
           services.openssh.enable = true;
           services.openssh.settings.PermitRootLogin = "no";
 
+          nix.settings.experimental-features = [ "nix-command" "flakes" ];
           nix.settings.trusted-public-keys = [
             "pc-nixos-a-1:2ajz3MCJ5lorXbQ5JcRoneIYBNbssblrwPgdanqE07g="
             "rmk-cc-pc-nixos-a:0hnzFy2JuBXDEwmfNf6UHDO0uTAQ69Z1aryW62z+AWs="
