@@ -100,6 +100,8 @@
       };
     };
 
+    # I've had to change the `deploy-rs` to use the one from `self.nixpkgs`
+    # because that is cross-compiled.
     activate = rec {
       custom =
         {
