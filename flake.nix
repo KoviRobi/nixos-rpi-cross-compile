@@ -23,6 +23,26 @@
 
           networking.hostName = "pi";
           networking.domain = "badger-toad.ts.net";
+          networking.firewall.allowedUDPPorts = [ 53 67 68 ];
+          networking.firewall.allowedTCPPorts = [ 53 ];
+          networking.defaultGateway = { address = "192.168.0.1"; interface = "end0"; };
+          networking.interfaces.end0 = {
+            ipv4.addresses = [{ address = "192.168.0.38"; prefixLength = 24; }];
+          };
+          services.dnsmasq = {
+            enable = true;
+            settings = {
+              interface = [ "end0" ];
+              domain-needed = true;
+              local = [ "/home/" ];
+              server = [ "1.1.1.1" "1.0.0.1" ];
+              dhcp-authoritative = true;
+              dhcp-option = [ "option:router,192.168.0.1" ];
+              dhcp-range = "192.168.0.10,192.168.0.254";
+              dhcp-hostsdir = "/etc/dnsmasq-hosts";
+              cache-size = "10000";
+            };
+          };
 
           imports = [ (modulesPath + "/installer/sd-card/sd-image-aarch64.nix") ];
 
