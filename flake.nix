@@ -87,6 +87,8 @@
             "nix repl --expr 'builtins.getFlake \"${self}\"'";
 
           environment.systemPackages = [ pkgs.python3 pkgs.python3.pkgs.pip ];
+
+          boot.supportedFilesystems = lib.mkForce [ "vfat" "f2fs" "xfs" "ntfs" "cifs" "ext4" ];
         })
 
         home-manager.nixosModule
