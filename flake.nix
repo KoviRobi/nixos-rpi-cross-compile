@@ -117,6 +117,7 @@
       sshUser = "rmk";
       user = "root";
       hostname = "pi.badger-toad.ts.net";
+      fastConnection = true;
       profiles.system = {
         path = self.activate.nixos self.nixosConfigurations.cross-vm;
       };
