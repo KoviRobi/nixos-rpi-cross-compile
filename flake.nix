@@ -57,7 +57,7 @@
           users.users.rmk = {
             hashedPassword = "$y$j9T$92t3XJPmBHWk1baoc0WTu/$DAC5AJseext1xVG7N0PK2tHYJ4L0qEZpbJleu1V5sS5";
             isNormalUser = true;
-            extraGroups = [ "wheel" ];
+            extraGroups = [ "wheel" "dialout" "video" "tty" ];
             openssh.authorizedKeys.keys = import "${kovirobi}/pubkeys.nix";
           };
           system.stateVersion = "22.11";
