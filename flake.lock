@@ -269,12 +269,13 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1724077775,
-        "narHash": "sha256-O6zjqZRqTvSFdqUOjhdufcpW4v3X6yP4hny9vvnIj/M=",
-        "owner": "KoviRobi",
-        "repo": "nixpkgs",
-        "rev": "fe8f1099101285f843696ac6e0cff728f429c7f7",
-        "type": "github"
+        "lastModified": 1724527366,
+        "narHash": "sha256-oMd/DRj1lFQH6seLuT5pCxs3u6Uf/v6uAfbnWz5L39Q=",
+        "ref": "refs/heads/rob",
+        "rev": "ffeec4470fc9581420ebc8e0db653db68ea6cb8b",
+        "revCount": 668855,
+        "type": "git",
+        "url": "file:///nix/nixpkgs"
       },
       "original": {
         "owner": "NixOS",
