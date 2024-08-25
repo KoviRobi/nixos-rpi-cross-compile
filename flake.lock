@@ -194,12 +194,13 @@
         "utils": "utils_4"
       },
       "locked": {
-        "lastModified": 1724523027,
-        "narHash": "sha256-/vcI07xlBKFe2WkFV9fyc0ODq/e7yvKoH6u4us8bznk=",
-        "owner": "KoviRobi",
-        "repo": "nixos-config",
-        "rev": "1c73a09fde6cdb0784f9498b4d88f9c3be39e6ca",
-        "type": "github"
+        "lastModified": 1724555767,
+        "narHash": "sha256-DVG+kQcQNtFBKdYmDo3S2lPSfAEB716XXYP5ZaNnrhg=",
+        "ref": "refs/heads/flake",
+        "rev": "65b3b422c6e75153423208a4cd30040d1f8f1f3b",
+        "revCount": 876,
+        "type": "git",
+        "url": "file:///home/rmk/nixos"
       },
       "original": {
         "owner": "KoviRobi",
