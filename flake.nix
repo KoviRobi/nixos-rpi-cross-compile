@@ -197,5 +197,54 @@
       noop = base: custom base ":";
     };
 
+    netboot =
+      let
+        buildPkgs = nixpkgs.legacyPackages.x86_64-linux;
+        netboot-system = self.nixosConfigurations.cross-vm;
+        kernel-cmdline = [ "init=${toplevel}/init" ] ++ netboot-system.config.boot.kernelParams;
+        inherit (netboot-system.config.system.build) kernel initialRamdisk toplevel;
+      in
+      buildPkgs.writeShellApplication
+        {
+          name = "netboot";
+          text = ''
+            cat <<EOF
+            Don't forget to open the following ports in the firewall:
+            UDP: 67 69 4011
+            TCP: 64172
+
+            This can be done via
+
+                sudo iptables -I nixos-fw 1 -i enp4s0 -p udp -m udp --dport 67    -j nixos-fw-accept
+                sudo iptables -I nixos-fw 2 -i enp4s0 -p udp -m udp --dport 69    -j nixos-fw-accept
+                sudo iptables -I nixos-fw 3 -i enp4s0 -p udp -m udp --dport 4011  -j nixos-fw-accept
+                sudo iptables -I nixos-fw 4 -i enp4s0 -p tcp -m tcp --dport 64172 -j nixos-fw-accept
+
+            (change enp4s0 to the interface you are using).
+
+            And once you are done, closed via
+
+                sudo iptables -D nixos-fw -i enp4s0 -p udp -m udp --dport 67    -j nixos-fw-accept
+                sudo iptables -D nixos-fw -i enp4s0 -p udp -m udp --dport 69    -j nixos-fw-accept
+                sudo iptables -D nixos-fw -i enp4s0 -p udp -m udp --dport 4011  -j nixos-fw-accept
+                sudo iptables -D nixos-fw -i enp4s0 -p tcp -m tcp --dport 64172 -j nixos-fw-accept
+
+            If you need to do DHCP also, consider
+
+                sudo ip addr add 192.168.10.1/24 dev enp4s0
+                sudo nix run 'nixpkgs#dnsmasq' -- \\
+                  --interface enp4s0 \\
+                  --dhcp-range 192.168.10.10,192.168.10.254 \\
+                  --dhcp-leasefile=dnsmasq.leases \\
+                  --no-daemon
+            EOF
+            nix run nixpkgs\#pixiecore -- \
+              boot ${kernel}/bzImage ${initialRamdisk}/initrd \
+              --cmdline "${builtins.concatStringsSep " " kernel-cmdline}" \
+              --debug --dhcp-no-bind --port 64172 --status-port 64172 \
+              "$@"
+          '';
+        };
+
   };
 }
