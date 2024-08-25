@@ -10,7 +10,9 @@
 
   inputs.deploy-rs.url = "github:serokell/deploy-rs";
 
-  outputs = { self, nixpkgs, home-manager, kovirobi, deploy-rs }: {
+  inputs.nixos-hardware.url = "github:NixOS/nixos-hardware";
+
+  outputs = { self, nixpkgs, home-manager, kovirobi, deploy-rs, nixos-hardware }: {
 
     nixosConfigurations.cross-vm = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -44,7 +46,12 @@
             };
           };
 
-          imports = [ (modulesPath + "/installer/sd-card/sd-image-aarch64.nix") ];
+          imports = [
+            "${nixos-hardware}/raspberry-pi/4"
+            (modulesPath + "/installer/sd-card/sd-image-aarch64.nix")
+          ];
+
+          hardware.raspberry-pi."4".fkms-3d.enable = true;
 
           # Let 'nixos-version --json' know about the Git revision
           # of this flake.
@@ -89,6 +96,7 @@
           environment.systemPackages = [ pkgs.python3 pkgs.python3.pkgs.pip ];
 
           boot.supportedFilesystems = lib.mkForce [ "vfat" "f2fs" "xfs" "ntfs" "cifs" "ext4" ];
+          boot.loader.raspberryPi.version = 4;
         })
 
         home-manager.nixosModule
