@@ -93,7 +93,7 @@
           environment.shellAliases.nixrepl =
             "nix repl --expr 'builtins.getFlake \"${self}\"'";
 
-          environment.systemPackages = [ pkgs.python3 pkgs.python3.pkgs.pip ];
+          environment.systemPackages = [ pkgs.python3 pkgs.python3.pkgs.pip pkgs.wol ];
 
           boot.supportedFilesystems = lib.mkForce [ "vfat" "f2fs" "xfs" "ntfs" "cifs" "ext4" ];
           boot.loader.raspberryPi.version = 4;
