@@ -149,7 +149,7 @@
                   "cifs"
                   "ext4"
                 ];
-                boot.loader.raspberryPi.version = 4;
+                boot.loader.generic-extlinux-compatible.enable = true;
               }
             )
 
