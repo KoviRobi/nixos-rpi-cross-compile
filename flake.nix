@@ -105,7 +105,7 @@
                     "video"
                     "tty"
                   ];
-                  openssh.authorizedKeys.keys = import "${kovirobi}/pubkeys.nix";
+                  openssh.authorizedKeys.keys = builtins.attrValues (import "${kovirobi}/pubkeys.nix");
                 };
                 system.stateVersion = "22.11";
 
