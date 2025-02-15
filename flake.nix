@@ -21,6 +21,15 @@
       deploy-rs,
       nixos-hardware,
     }:
+    let
+      overlays = builtins.attrValues kovirobi.overlays ++ [
+        (final: prev: {
+          gitFull = prev.git.override {
+            withSsh = true;
+          };
+        })
+      ];
+    in
     {
 
       nixosConfigurations.cross-vm = nixpkgs.lib.nixosSystem {
@@ -40,7 +49,7 @@
               {
                 nixpkgs = {
                   crossSystem = lib.systems.examples.aarch64-multiplatform;
-                  overlays = builtins.attrValues kovirobi.overlays;
+                  inherit overlays;
                 };
 
                 networking.hostName = "pi";
@@ -170,7 +179,7 @@
       nixpkgs = import nixpkgs {
         system = "x86_64-linux";
         crossSystem = nixpkgs.lib.systems.examples.aarch64-multiplatform;
-        overlays = builtins.attrValues kovirobi.overlays;
+        inherit overlays;
       };
 
       packages.x86_64-linux.default = self.nixosConfigurations.cross-vm.config.system.build.sdImage;
