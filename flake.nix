@@ -147,7 +147,6 @@
                 environment.systemPackages = [
                   pkgs.python3
                   pkgs.python3.pkgs.pip
-                  pkgs.wol
                 ];
 
                 boot.supportedFilesystems = lib.mkForce [
