@@ -179,7 +179,6 @@
               home-manager.users.rmk = {
                 imports = kovirobi.homeModules.simple;
                 home.stateVersion = "22.11";
-                systemd.user.services.tmux-server.Install.WantedBy = [ "basic.target" ];
                 programs.git.signing.format = "ssh";
               };
             }
