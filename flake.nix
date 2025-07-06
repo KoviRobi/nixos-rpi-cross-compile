@@ -161,7 +161,7 @@
               }
             )
 
-            home-manager.nixosModule
+            home-manager.nixosModules.default
             {
               # environment.systemPackages = [ home-manager.defaultPackage.${system} ];
               home-manager.useGlobalPkgs = true;
