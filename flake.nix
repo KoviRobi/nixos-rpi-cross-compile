@@ -104,6 +104,7 @@
                   (modulesPath + "/installer/sd-card/sd-image-aarch64.nix")
                 ];
 
+                hardware.enableAllHardware = lib.mkForce false;
                 hardware.raspberry-pi."4".fkms-3d.enable = true;
 
                 # Let 'nixos-version --json' know about the Git revision
