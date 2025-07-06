@@ -85,6 +85,15 @@
                     dhcp-authoritative = true;
                     dhcp-option = [ "option:router,192.168.0.1" ];
                     dhcp-range = "192.168.0.10,192.168.0.254";
+                    dhcp-host = [
+                      "2c:f0:5d:0a:92:7a,192.168.0.10,pc-nixos-a"
+                      "58:cd:c9:f7:3b:8d,192.168.0.11,inspiron"
+                      "e2:9d:a5:bd:c0:04,192.168.0.12,rmk-duel"
+                      "e8:db:84:68:1f:eb,192.168.0.15,bulb-rob-1"
+                      "d4:8c:49:0e:ca:19,192.168.0.16,bulb-rob-2"
+                      "e8:db:84:67:e3:19,192.168.0.17,bulb-rob-3"
+                      "d4:8c:49:0e:c4:91,192.168.0.18,bulb-rob-4"
+                    ];
                     dhcp-hostsdir = "/etc/dnsmasq-hosts";
                     cache-size = "10000";
                   };
